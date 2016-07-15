@@ -54,16 +54,20 @@ public class Magpie4
 			response = transformIWantToStatement(statement);
 		}
 
+		else if (findKeyword(statement, "I want", 0) >= 0)
+		{
+			response = transformIWantStatement(statement);
+		}
+
 		else
 		{
 			// Look for a two word (you <something> me)
 			// pattern
-			int psn = findKeyword(statement, "you", 0);
-
-			if (psn >= 0
-					&& findKeyword(statement, "me", psn) >= 0)
-			{
+			if (hasXThenY(statement, "you", "me")) {
 				response = transformYouMeStatement(statement);
+			}
+			else if (hasXThenY(statement, "I", "you")) {
+				response = transformIYouStatement(statement);
 			}
 			else
 			{
@@ -72,7 +76,14 @@ public class Magpie4
 		}
 		return response;
 	}
-	
+
+	private boolean hasXThenY(String statement, String first, String second)
+	{
+		// Look for a two word pattern
+		int psn = findKeyword(statement, first, 0);
+		return psn >= 0 && findKeyword(statement, second, psn) >= 0;
+	}
+
 	/**
 	 * Take a statement with "I want to <something>." and transform it into 
 	 * "What would it mean to <something>?"
@@ -80,6 +91,22 @@ public class Magpie4
 	 * @return the transformed statement
 	 */
 	private String transformIWantToStatement(String statement)
+	{
+		return transformSingle(statement, "I want to ", "What would it mean to ", "?");
+	}
+
+	/**
+	 * Take a statement with "I want <something>." and transform it into 
+	 * "Would you really be happy if you had <something>?"
+	 * @param statement the user statement, assumed to contain "I want "
+	 * @return the transformed statement
+	 */
+	private String transformIWantStatement(String statement)
+	{
+		return transformSingle(statement, "I want", "Would you really be happy if you had ", "?");
+	}
+	
+	private String transformSingle(String statement, String keyword, String before, String after)
 	{
 		//  Remove the final period, if there is one
 		statement = statement.trim();
@@ -90,12 +117,10 @@ public class Magpie4
 			statement = statement.substring(0, statement
 					.length() - 1);
 		}
-		int psn = findKeyword (statement, "I want to", 0);
-		String restOfStatement = statement.substring(psn + 9).trim();
-		return "What would it mean to " + restOfStatement + "?";
+		int psn = findKeyword (statement, keyword, 0);
+		String restOfStatement = statement.substring(psn + keyword.length()).trim();
+		return before + restOfStatement + after;	
 	}
-
-	
 	
 	/**
 	 * Take a statement with "you <something> me" and transform it into 
@@ -105,6 +130,28 @@ public class Magpie4
 	 */
 	private String transformYouMeStatement(String statement)
 	{
+		return transformInner(statement, "you", "me", "What makes you think that I ", " you?");
+	}
+
+	/**
+	 * Take a statement with "you <something> me" and transform it into 
+	 * "What makes you think that I <something> you?"
+	 * @param statement the user statement, assumed to contain "you" followed by "me"
+	 * @return the transformed statement
+	 */
+	private String transformIYouStatement(String statement)
+	{
+		return transformInner(statement, "I", "you", "Why do you ", " me?");
+	}
+	
+	/**
+	 * Take a statement with "you <something> me" and transform it into 
+	 * "What makes you think that I <something> you?"
+	 * @param statement the user statement, assumed to contain "you" followed by "me"
+	 * @return the transformed statement
+	 */
+	private String transformInner(String statement, String starter, String ender, String before, String after)
+	{
 		//  Remove the final period, if there is one
 		statement = statement.trim();
 		String lastChar = statement.substring(statement
@@ -115,17 +162,13 @@ public class Magpie4
 					.length() - 1);
 		}
 		
-		int psnOfYou = findKeyword (statement, "you", 0);
-		int psnOfMe = findKeyword (statement, "me", psnOfYou + 3);
+		int psnOfStart = findKeyword (statement, starter, 0);
+		int psnOfEnd = findKeyword (statement, ender, psnOfStart + starter.length());
 		
-		String restOfStatement = statement.substring(psnOfYou + 3, psnOfMe).trim();
-		return "What makes you think that I " + restOfStatement + " you?";
+		String restOfStatement = statement.substring(psnOfStart + starter.length(), psnOfEnd).trim();
+		return before + restOfStatement + after;
 	}
-	
-	
 
-	
-	
 	/**
 	 * Search for one word in phrase. The search is not case
 	 * sensitive. This method will check that the given goal

@@ -54,4 +54,12 @@ iter: 3 psn: 22 before: 's' after: 'w'
 
 Activity 4
 
+Find an example of when this structure does not work well. How can you improve it?
+
+It doesn't work well with past tense verbs.
+For example "I found you" becomes "Why do you found me?" instead of "Why did you find me?".  
+
+This isn't too easy to improve, an ideal solution would require understanding verb tenses.
+
 Activity 5
+
