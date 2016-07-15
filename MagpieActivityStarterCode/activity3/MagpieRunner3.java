@@ -24,6 +24,12 @@ public class MagpieRunner3
 			System.out.println (maggie.getResponse(statement));
 			statement = in.nextLine();
 		}
+		in.close();
+		
+		Magpie3.findKeyword("She's my sister", "sister", 0);
+		Magpie3.findKeyword("Brother Tom is helpful", "brother", 0);
+		Magpie3.findKeyword("I can't catch wild cats", "cat", 0);
+		Magpie3.findKeyword("I know nothing about snow plows", "no", 0);
 	}
 
 }

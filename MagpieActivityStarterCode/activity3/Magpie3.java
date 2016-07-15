@@ -45,6 +45,26 @@ public class Magpie3
 		{
 			response = "Tell me more about your family.";
 		}
+		else if (findKeyword(statement, "dog") > 0 || findKeyword(statement, "cat") > 0)
+		{
+			response = "Tell me more about your pets.";
+		}
+		else if (findKeyword(statement, "Bissonnette") > 0)
+		{
+			response = "He sounds like a good teacher.";
+		}
+		else if (findKeyword(statement, "shirt") > 0 || findKeyword(statement, "pants") > 0)
+		{
+			response = "I love your outfit today!";
+		}
+		else if (findKeyword(statement, "news") > 0)
+		{
+			response = "Have you seen the news recently?";
+		}
+		else if (findKeyword(statement, "sun") > 0)
+		{
+			response = "I love the weather around this time of year.";
+		}
 		else
 		{
 			response = getRandomResponse();
@@ -68,9 +88,10 @@ public class Magpie3
 	 * @return the index of the first occurrence of goal in
 	 *         statement or -1 if it's not found
 	 */
-	private int findKeyword(String statement, String goal,
+	public static int findKeyword(String statement, String goal,
 			int startPos)
 	{
+		//System.out.println("Searching '" + statement + "' for goal '" + goal + "'");
 		String phrase = statement.trim().toLowerCase();
 		goal = goal.toLowerCase();
 
@@ -78,6 +99,8 @@ public class Magpie3
 		// the line below
 		int psn = phrase.indexOf(goal, startPos);
 
+		int iter = 1;
+		
 		// Refinement--make sure the goal isn't part of a
 		// word
 		while (psn >= 0)
@@ -96,6 +119,8 @@ public class Magpie3
 						psn + goal.length() + 1);
 			}
 
+			//System.out.println("iter: " + iter + " psn: " + psn + " before: '" + before + "' after: '" + after + "'");
+
 			// If before and after aren't letters, we've
 			// found the word
 			if (((before.compareTo("a") < 0) || (before
@@ -110,7 +135,7 @@ public class Magpie3
 			// The last position didn't work, so let's find
 			// the next, if there is one.
 			psn = phrase.indexOf(goal, psn + 1);
-
+			iter++;
 		}
 
 		return -1;

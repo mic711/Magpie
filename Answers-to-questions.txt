@@ -1,0 +1,57 @@
+Answers to questions in the Student Guide.
+
+Conan Yuan
+Jul 14, 2016
+
+Activity 1
+
+1. Can you identify keywords to which your chatbot responds?
+
+I picked the bot Chomsky: http://demo.vhost.pandorabots.com/pandora/talk?botid=b0dafd24ee35a477
+
+One of the keywords seems to be "no, I mean".  It responds with things like "So that's what you mean"
+or "Ah, I see what you mean".  
+
+Another keyword is "asdf", to which the bot responds "Asdf are the first four letters you learn in typing".
+
+
+2. Think of several keywords and the responses they might cause.
+
+You could respond to the keyword "age" or "how old" with information about when the bot was created.
+You could respond to questions about where you are with information about where the server is or
+the location of the person who created the bot.  
+
+Activity 2
+
+1. What happens when a keyword is included in another word? Consider statements like “I know
+all the state capitals” and “I like vegetables smothered in cheese.” Explain the problem with the
+responses to these statements.
+
+The program responds the same way to the keyword even if it is part of another word.  For
+"I know all the state capitals", it sees the "no" part of "know" and responds "Why so negative".
+For "I like vegetables smothered in cheese." it sees the "mother" part of "smothered", so it
+asks about your family.  It doesn't know that when those substrings are found within another
+word, the meaning changes.  
+
+
+Activity 3
+
+Searching 'She's my sister' for goal 'sister'
+iter: 1 psn: 9 before: ' ' after: ' '
+
+Searching 'Brother Tom is helpful' for goal 'brother'
+iter: 1 psn: 0 before: ' ' after: ' '
+
+Searching 'I can't catch wild cats' for goal 'cat'
+iter: 1 psn: 8 before: ' ' after: 'c'
+iter: 2 psn: 19 before: ' ' after: 's'
+
+Searching 'I know nothing about snow plows' for goal 'no'
+iter: 1 psn: 3 before: 'k' after: 'w'
+iter: 2 psn: 7 before: ' ' after: 't'
+iter: 3 psn: 22 before: 's' after: 'w'
+
+
+Activity 4
+
+Activity 5
